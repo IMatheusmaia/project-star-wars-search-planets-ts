@@ -10,7 +10,10 @@ const useFilters = () => {
     setFilterPlanets,
     filterByNumericValues,
     setFilterByNumericValues,
-    error, loading,
+    error,
+    loading,
+    sorted,
+    setSorted,
   } = useContext(GlobalContext);
 
   const INITIAL_STATE = {
@@ -32,6 +35,7 @@ const useFilters = () => {
   ];
   const [inputs, setInputs] = useState(INITIAL_STATE);
   const [filterOptions, setFilterOptions] = useState<string[]>(planetAtributes);
+  const [orderOptions, setOrderOptions] = useState<string[]>(planetAtributes);
 
   // função que recebe o valor da search bar e filtra planetas com base no valor
   const searchByName = (search: string) => {
@@ -49,6 +53,16 @@ const useFilters = () => {
     const { name, value } = target;
     if (name === 'search') {
       searchByName(value);
+    }
+    if (name === 'ascendente') {
+      setInputs((prevInputs) => (
+        { ...prevInputs, ascendente: true, descendente: false }
+      ));
+    }
+    if (name === 'descendente') {
+      setInputs((prevInputs) => (
+        { ...prevInputs, ascendente: false, descendente: true }
+      ));
     }
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
   };
@@ -129,6 +143,44 @@ const useFilters = () => {
     setFilterByNumericValues([]);
     setFilterPlanets([]);
   };
+  const sortAsc = (list: APIType[], order:string) => {
+    const result = list.sort((a, b) => {
+      if (a[order] === 'unknown'
+      && b[order] !== 'unknown'
+      ) return 1;
+      if (a[order] !== 'unknown'
+      && b[order] === 'unknown'
+      ) return -1;
+      if (Number(a[order]) < Number(b[order])) return -1;
+
+      return 0;
+    });
+    return result;
+  };
+  const sortDesc = (list: APIType[], order:string) => {
+    const result = list.sort((a, b) => {
+      if (a[order] === 'unknown' && b[order] !== 'unknown') return 1;
+      if (a[order] !== 'unknown' && b[order] === 'unknown') return -1;
+      if (Number(a[order]) > Number(b[order])) return -1;
+
+      return 0;
+    });
+    return result;
+  };
+  const orderByValue = () => {
+    const { order, ascendente, descendente } = inputs;
+    const list = filterPlanets.length > 0 ? filterPlanets : planets;
+
+    if (ascendente) {
+      const sortedDefault = sortAsc(list, order);
+      setFilterPlanets([...sortedDefault]);
+    }
+    if (descendente) {
+      const sortedInverted = sortDesc(list, order);
+      setFilterPlanets([...sortedInverted]);
+    }
+    setSorted(true);
+  };
 
   return {
     planets,
@@ -145,6 +197,10 @@ const useFilters = () => {
     filterByNumericValues,
     filterOptions,
     setFilterOptions,
+    orderOptions,
+    setOrderOptions,
+    orderByValue,
+    sorted,
   };
 };
 

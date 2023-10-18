@@ -11,6 +11,8 @@ export type GlobalContextType = {
   setFilterPlanets: (planets: APIType[]) => void,
   filterByNumericValues: CardAtribute[],
   setFilterByNumericValues:(card: CardAtribute[]) => void,
+  sorted: boolean,
+  setSorted: (bool: boolean) => void,
 };
 
 const GlobalContext = createContext({} as GlobalContextType);

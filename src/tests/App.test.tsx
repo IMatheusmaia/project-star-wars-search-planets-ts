@@ -69,4 +69,29 @@ describe('Testa se ao iniciar a aplicação é feita a requisição dos planetas
     // const unflitredPlanet = screen.getByText(/yavin/i);
     // expect(unflitredPlanet).not.toBeInTheDocument();
   });
+  
+  test('Testa se os campos de inpus de ordenação estão presentes na aplicação e se tem o funcionamento esperado', async () => {
+    render(
+      <GlobalProvider>
+        <App />
+      </GlobalProvider>
+    );
+    
+    const columnSelect = screen.getByTestId('column-sort');
+    expect(columnSelect).toBeInTheDocument();
+
+    await userEvent.selectOptions(columnSelect, 'diameter');
+    expect(columnSelect).toHaveValue('diameter');
+
+    const asc = screen.getByTestId('column-sort-input-asc');
+    const desc = screen.getByTestId('column-sort-input-desc');
+    expect(asc).toBeInTheDocument();
+    await userEvent.click(asc);
+    expect(asc).toBeChecked();
+    expect(desc).not.toBeChecked();
+    await userEvent.click(desc);
+    expect(desc).toBeChecked();
+    expect(asc).not.toBeChecked();
+    
+  });
 });

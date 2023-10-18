@@ -6,8 +6,11 @@ function Filters() {
     handleRemove,
     handleClearFilters,
     filterByValue,
+    orderByValue,
     filterByNumericValues,
-    filterOptions } = useFilters();
+    filterOptions,
+    orderOptions,
+  } = useFilters();
 
   return (
     <div className="filters-container">
@@ -72,17 +75,26 @@ function Filters() {
       <div>
         <label>
           Ordenar
-          <select defaultValue={ inputs.order }>
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+          <select
+            data-testid="column-sort"
+            name="order"
+            defaultValue={ inputs.order }
+            onChange={ (event) => handleChange(event) }
+          >
+            {orderOptions.map((value, index) => (
+              <option
+                key={ index }
+                value={ value }
+              >
+                {value}
+              </option>
+            ))}
           </select>
         </label>
 
         <label>
           <input
+            data-testid="column-sort-input-asc"
             type="radio"
             name="ascendente"
             checked={ inputs.ascendente }
@@ -92,6 +104,7 @@ function Filters() {
         </label>
         <label>
           <input
+            data-testid="column-sort-input-desc"
             type="radio"
             name="descendente"
             checked={ inputs.descendente }
@@ -100,7 +113,8 @@ function Filters() {
           Descendente
         </label>
         <button
-          onClick={ () => {} }
+          data-testid="column-sort-button"
+          onClick={ orderByValue }
         >
           ORDENAR
         </button>

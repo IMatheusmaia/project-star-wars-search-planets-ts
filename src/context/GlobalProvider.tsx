@@ -13,6 +13,7 @@ function GlobalProvider({ children }: GlobalProviderProps) {
   const [filterPlanets, setFilterPlanets] = useState<APIType[]>([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState<CardAtribute[]>([]);
   const [searchPlanet, setSearchPlanet] = useState<APIType[]>([]);
+  const [sorted, setSorted] = useState<boolean>(false);
 
   return (
     <GlobalContext.Provider
@@ -27,6 +28,8 @@ function GlobalProvider({ children }: GlobalProviderProps) {
         setFilterPlanets,
         filterByNumericValues,
         setFilterByNumericValues,
+        sorted,
+        setSorted,
       } as GlobalContextType
 }
     >

@@ -31,13 +31,25 @@ function Board({ data }: DataProp) {
             <tr
               key={ item.url }
             >
-              {keys.map((info, index) => (
-                <td
-                  key={ index }
-                >
-                  { info }
-                </td>
-              ))}
+              {keys.map((info, index) => {
+                if (index === 0) {
+                  return (
+                    <td
+                      key={ index }
+                      data-testid="planet-name"
+                    >
+                      {info}
+                    </td>
+                  );
+                }
+                return (
+                  <td
+                    key={ index }
+                  >
+                    { info }
+                  </td>
+                );
+              })}
             </tr>
           );
         })}

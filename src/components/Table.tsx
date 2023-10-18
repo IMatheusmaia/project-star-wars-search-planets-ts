@@ -10,7 +10,10 @@ function Table() {
     searchPlanet,
     filterPlanets,
     filterByNumericValues,
-    error, loading } = useFilters();
+    error,
+    loading,
+    sorted,
+  } = useFilters();
 
   const [render, setRender] = useState<APIType[]>([]);
 
@@ -25,10 +28,13 @@ function Table() {
     }
     if ((filterPlanets.length === 0
       && searchPlanet.length <= 0)
-      || (filterByNumericValues.length === 0 && searchPlanet.length <= 0)) {
+    || (filterByNumericValues.length === 0
+      && searchPlanet.length <= 0
+      && sorted === false)
+    ) {
       setRender(planets);
     }
-  }, [planets, searchPlanet, filterByNumericValues, filterPlanets]);
+  }, [planets, searchPlanet, filterByNumericValues, filterPlanets, sorted]);
 
   const dataLessResidentes = render.map((item:APIType) => {
     delete item.residents;
